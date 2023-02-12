@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1.4
+
+FROM ruby:3.1.2
+RUN apt-get update -qq && apt-get install -y nodejs mariadb-client
+WORKDIR /myapp
+COPY --link Gemfile /myapp/Gemfile
+COPY --link Gemfile.lock /myapp/Gemfile.lock
+
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
+# Ensure binding is always 0.0.0.0, even in development, to access server from outside container
+ENV BINDING="0.0.0.0"
+
+RUN gem install bundler:2.3.4 && bundle install --jobs=4

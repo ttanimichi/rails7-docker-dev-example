@@ -1,24 +1,31 @@
-# README
+# 使い方
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 起動
 
-Things you may want to cover:
+```sh
+docker compose -f docker-compose.dev.yml up --build --remove-orphans
+```
 
-* Ruby version
+## rails server
 
-* System dependencies
+Docker コンテナに入って手動で起動することを推奨しています（debugger 等を使用する際の問題を避けるため）
 
-* Configuration
+```sh
+$ docker compose -f docker-compose.dev.yml exec app bash
+# bin/rails s -b '0.0.0.0'
+```
 
-* Database creation
+## rails console
 
-* Database initialization
+`rails server` と同様、Docker コンテナに入って手動で起動することを推奨しています。
 
-* How to run the test suite
+```sh
+$ docker compose -f docker-compose.dev.yml exec app bash
+# bin/rails c
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## 停止
 
-* Deployment instructions
-
-* ...
+```sh
+docker compose -f docker-compose.dev.yml stop
+```
