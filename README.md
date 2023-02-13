@@ -1,9 +1,15 @@
 # 使い方
 
-## 起動
+## Docker コンテナを起動
 
 ```sh
 docker compose -f docker-compose.dev.yml up --build --remove-orphans
+```
+
+## データベースの作成
+
+```sh
+docker compose -f docker-compose.dev.yml exec app bin/rails db:create db:migrate
 ```
 
 ## rails server
@@ -11,17 +17,15 @@ docker compose -f docker-compose.dev.yml up --build --remove-orphans
 Docker コンテナに入って手動で起動することを推奨しています（debugger 等を使用する際の問題を避けるため）
 
 ```sh
-$ docker compose -f docker-compose.dev.yml exec app bash
-# bin/rails s -b '0.0.0.0'
+docker compose -f docker-compose.dev.yml exec app bin/rails s
 ```
 
 ## rails console
 
-`rails server` と同様、Docker コンテナに入って手動で起動することを推奨しています。
+`rails server` と同様、Docker コンテナに入って起動することを推奨しています。
 
 ```sh
-$ docker compose -f docker-compose.dev.yml exec app bash
-# bin/rails c
+docker compose -f docker-compose.dev.yml exec app bin/rails c
 ```
 
 ## 停止
