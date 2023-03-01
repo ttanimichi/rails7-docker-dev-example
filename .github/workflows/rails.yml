@@ -1,0 +1,33 @@
+name: "Ruby on Rails CI"
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["*"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: mysql:5.7
+        ports:
+          - "3306:3306"
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "mysql2://root@127.0.0.1:3306/myapp_test"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.2
+          bundler-cache: true
+      - name: Set up the database
+        run: |
+          bin/rails db:create
+          bin/rails db:schema:load
+      - name: Run RSpec
+        run: bundle exec rspec
